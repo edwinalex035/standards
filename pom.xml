@@ -20,6 +20,7 @@
 		<checkstyle.config.location>${project.basedir}/custom_google_checks.xml</checkstyle.config.location>
 		<checkstyle-maven-plugin.version>3.1.0</checkstyle-maven-plugin.version>
 		<checkstyle-puppycrawl-tools.version>8.8</checkstyle-puppycrawl-tools.version>
+		<jacoco-plugin.version>0.8.5</jacoco-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -69,7 +70,7 @@
 
 	<reporting>
 		<plugins>
-			<!-- Checkstyle -->
+			<!-- Checkstyle build config -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -78,6 +79,7 @@
 					<configLocation>checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
+			<!-- End Checkstyle -->
 		</plugins>
 	</reporting>
 
@@ -86,8 +88,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- Hint to bug regarding failsafe plugin -->
+				<configuration>
+					<classifier>exec</classifier>
+				</configuration>
 			</plugin>
-			<!-- Checkstyle -->
+			<!-- Checkstyle build config -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -116,6 +122,53 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- End Checkstyle build config -->
+			<!-- Code coverage config -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-code-coverage-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Exclude files from Code Coverage -->
+					<excludes>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!-- End Code Coverage config -->
+			<!-- Failsafe config -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>failsafe-integration-tests</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- End Failsafe config -->
 		</plugins>
 	</build>
 
