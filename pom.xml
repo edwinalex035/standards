@@ -21,6 +21,7 @@
 		<checkstyle-maven-plugin.version>3.1.0</checkstyle-maven-plugin.version>
 		<checkstyle-puppycrawl-tools.version>8.8</checkstyle-puppycrawl-tools.version>
 		<jacoco-plugin.version>0.8.5</jacoco-plugin.version>
+		<formatter-plugin.version>2.11.0</formatter-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -93,6 +94,27 @@
 					<classifier>exec</classifier>
 				</configuration>
 			</plugin>
+			<!-- Format the code -->
+			<plugin>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>${formatter-plugin.version}</version>
+				<configuration>
+					<configFile>${project.basedir}/eclipse-java-google-style.xml</configFile>
+					<encoding>UTF-8</encoding>
+					<compilerSource>1.8</compilerSource>
+					<compilerCompliance>1.8</compilerCompliance>
+					<compilerTargetPlatform>1.8</compilerTargetPlatform>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- End format the code -->
 			<!-- Checkstyle build config -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
