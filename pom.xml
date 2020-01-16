@@ -105,9 +105,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<!-- Hint to bug regarding failsafe plugin -->
+				<!--
 				<configuration>
 					<classifier>exec</classifier>
 				</configuration>
+				-->
 			</plugin>
 			<!-- Format the code -->
 			<plugin>
@@ -235,6 +237,27 @@
 				<version>3.7.0.1746</version>
 			</plugin>
 			<!-- End Sonarqube config -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.8</version>
+				<configuration>
+					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+					<repository>test/dockeragent</repository>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
